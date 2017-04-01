@@ -35,6 +35,9 @@
   font-size: 18px;
   margin-bottom: 50px;
 }
+.form_submit2{
+  margin-top: 20px;
+}
 .title_n{
   margin-left: 5px;
   min-width: 90px;
@@ -145,7 +148,6 @@
 }
 .searchResult{
   text-align: left;
-  margin-bottom: 20px;
 }
 .searchResult li{
   padding: 10px;

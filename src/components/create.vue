@@ -159,13 +159,15 @@
         <div style="position: relative;margin-top: 20px;">
           <input class="search" placeholder="搜索人名"/>
           <i class="fa fa-search" aria-hidden="true"></i>
-          <ul class="searchResult">
+          <ul class="searchResult" v-if="isShow">
             <li v-for="(item, index) in searchResult" v-on:click="add(index)">
-              {{ item }}<i class="fa fa-check" aria-hidden="true"></i>
+              {{ item }}
+              <!--<i class="fa fa-check" aria-hidden="true"></i>-->
             </li>
           </ul>
-          <button class="form_submit" v-on:click="sure">完成</button>
         </div>
+        
+        <button class="form_submit form_submit2" v-on:click="sure">完成</button>
       </div>
     </div>
   </div>
@@ -182,6 +184,7 @@
         searchResult:["林伟华","汪敏"],
         sureUsers:[],
         isActive:false,
+        isShow: true,
         startTime: {
           time: ''
         },
@@ -248,6 +251,7 @@
           }
         }
         this.selectUsers.push(selected);
+        this.isShow = false
       }
     },
     components: {
