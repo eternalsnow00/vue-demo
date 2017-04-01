@@ -201,7 +201,8 @@
             "padding": "8px 10px",
             "border-radius": "5px",
             "box-shadow": "none",
-            "border": "1px solid #dcdcdc"
+            "border": "1px solid #dcdcdc",
+            "-webkit-appearance":"none"
           },
           color: {
             header: '#ff8000',

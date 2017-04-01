@@ -50,6 +50,7 @@
   box-shadow: none;
   border: 1px solid #dcdcdc;
   margin-left: 10px;
+  -webkit-appearance: none;
 }
 .form_textarea{
   box-sizing: border-box;
@@ -61,6 +62,7 @@
   border: 1px solid #dcdcdc;
   margin-left: 10px;
   height: 60px;
+  -webkit-appearance: none;
 }
 .meetingTime{
   width: 100px;
