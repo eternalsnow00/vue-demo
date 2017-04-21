@@ -302,7 +302,7 @@
         })
         .then(function (response) {
           self.searchResult = response.data.data.users;
-          console.log(self.group)
+          self.isShow = true;
         })
         .catch(function (error) {
         });
@@ -317,7 +317,6 @@
         this.isActive = false;
         this.sureUsers = this.selectUsers;
         this.sureGroup = this.selectGroup;
-        console.log(this.selectUsers)
       },
       deleteUser:function(index){  //删除人
         this.selectUsers.splice(index,1);
@@ -340,7 +339,8 @@
           }
         }
         this.selectUsers.push(selected);
-        this.isShow = false
+        this.isShow = false;
+        document.getElementById("search").value='';
       },
       addGroups:function (index) { //添加组到选框
         var that = this;
