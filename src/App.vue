@@ -9,8 +9,7 @@
 <script>
   export default {
     name: 'app',
-
-    created:function(){
+    beforeCreate:function(){
       var self = this;
       self.axios.get('https://phichattest.phicomm.com/index.php/API/base/info',{
         headers: {
@@ -19,26 +18,16 @@
       })
       .then(function (response) {
         console.log(response.data);
-        window.localStorage.userId = response.data.user_id
+        if(response.data.status== true){
+          window.localStorage.userId = response.data.user_id;
+        }else{
+          self.$router.push({ name: 'error'});
+        }
+
       })
       .catch(function (error) {
         self.$router.push({ name: 'error'});
       });
-//      var self = this;
-//      self.axios.post('https://phichattest.phicomm.com/seller/api.php/base/info', {
-//        user_id: 1,
-//      },{
-//        headers: {
-//          "Content-Type": "application/x-www-form-urlencoded"
-//        }
-//      })
-//      .then(function (response) {
-//        console.log(response.data);
-//        self.$router.push({ name: 'meun'});
-//      })
-//      .catch(function (error) {
-//        alert(2);
-//      });
     }
   }
 </script>

@@ -8,14 +8,11 @@
 }
 .form_content{
   padding: 15px;
-  display: flex;
-  display: -webkit-flex;
   box-sizing: border-box;
-  flex-direction:row;
-  flex-wrap: nowrap;
-  justify-content:flex-start;
-  align-items:center;
   border-bottom: 1px solid #ccc;
+  position: relative;
+  padding-left: 120px;
+  overflow: hidden;
 }
 .note{
   padding: 15px;
@@ -39,10 +36,16 @@
   margin-top: 20px;
 }
 .title_n{
-  margin-left: 5px;
-  min-width: 90px;
-  width: 90px;
+  margin-left: 15px;
+  border-right: 1px solid #dcdcdc;
+  width: 95px;
   text-align: left;
+  position: absolute;
+  top: 22px;
+  left: 0px;
+}
+.title_n i{
+  width: 25px;
 }
 .form_input{
   box-sizing: border-box;
@@ -52,23 +55,22 @@
   border-radius: 5px;
   box-shadow: none;
   border: 1px solid #dcdcdc;
-  margin-left: 10px;
+
   -webkit-appearance: none;
 }
 .form_textarea{
+  width: 100%;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  flex:1;
   padding: 8px 10px;
   border-radius: 5px;
   box-shadow: none;
   border: 1px solid #dcdcdc;
-  margin-left: 10px;
-  height: 60px;
   -webkit-appearance: none;
 }
 .meetingTime{
   width: 100px;
+  float: left;
 }
 .meetingTime select{
   box-sizing: border-box;
@@ -78,6 +80,8 @@
   box-shadow: none;
   background: white;
   border: 1px solid #dcdcdc;
+  float: left;
+  width: 90px;
 }
 .users{
   min-height: 34px;
@@ -165,3 +169,9 @@
 .classB{
   left:100%
 }
+.userinfo{
+  padding-left: 28px;
+}
+/*.form_content i{*/
+  /*width: 30px;*/
+/*}*/
