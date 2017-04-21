@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import meun from '@/components/meun'
 import calendar from '@/components/calendar'
 import create from '@/components/create'
+import group from '@/components/group'
 import error from '@/components/error'
 
 Vue.use(Router);
@@ -26,6 +27,12 @@ const router =  new Router({
       path:"/create",
       name:"create",
       component:create,
+      meta:{title:'新建'}
+    },
+    {
+      path:"/group",
+      name:"group",
+      component:group,
       meta:{title:'新建'}
     },
     {

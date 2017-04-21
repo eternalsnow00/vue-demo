@@ -2,27 +2,27 @@
   <div class="container">
     <div class="container_left">
       <div class="form_content">
-        <i class="fa fa-user-o" aria-hidden="true"></i>
+        <i class="fa fa-user" aria-hidden="true"></i>
         <p class="title_n">申请人</p>
-        <input type="text" class="form_input" placeholder="申请人" readonly/>
+        <input type="text" class="form_input" placeholder="申请人" readonly v-model="userinfo.name"/>
       </div>
       <div class="form_content">
-        <i class="fa fa-user-o" aria-hidden="true"></i>
+        <i class="fa fa-university" aria-hidden="true"></i>
         <p class="title_n">申请部门</p>
-        <input type="text" class="form_input" placeholder="申请部门" readonly/>
+        <input type="text" class="form_input" placeholder="申请部门" readonly v-model="userinfo.department"/>
       </div>
       <div class="form_content">
-        <i class="fa fa-user-o" aria-hidden="true"></i>
+        <i class="fa fa-money" aria-hidden="true"></i>
         <p class="title_n">成本中心</p>
-        <input type="text" class="form_input" placeholder="成本中心" readonly/>
+        <input type="text" class="form_input" placeholder="成本中心" readonly v-model="userinfo.cost_dep"/>
       </div>
       <div class="form_content">
-        <i class="fa fa-user-o" aria-hidden="true"></i>
+        <i class="fa fa-calendar" aria-hidden="true"></i>
         <p class="title_n">会议日期</p>
         <date-picker :date="startTime" :option="option" :limit="limit"></date-picker>
       </div>
       <div class="form_content">
-        <i class="fa fa-user-o" aria-hidden="true"></i>
+        <i class="fa fa-calendar-times-o" aria-hidden="true"></i>
         <p class="title_n">会议时间</p>
         <div class="meetingTime">
             <select>
@@ -130,12 +130,12 @@
         </div>
       </div>
       <div class="form_content" v-on:click="telephone">
-        <i class="fa fa-user-o" aria-hidden="true"></i>
+        <i class="fa fa-users" aria-hidden="true"></i>
         <p class="title_n">邀请人</p>
-        <p class="users"><span v-for="(item, index) in sureUsers">{{ item }}</span><i class="fa fa-angle-right" aria-hidden="true"></i></p>
+        <p class="users"><span v-for="(item, index) in sureUsers">{{ item.user_name }}</span><span v-for="(item, index) in suregroup">{{ item.group_name }}</span><i class="fa fa-angle-right" aria-hidden="true"></i></p>
       </div>
       <div class="form_content">
-        <i class="fa fa-user-o" aria-hidden="true"></i>
+        <i class="fa fa-pencil" aria-hidden="true"></i>
         <p class="title_n">备注</p>
         <textarea type="text" class="form_textarea" placeholder="备注"/>
       </div>
@@ -151,22 +151,39 @@
         </p>
       </div>
       <div class="selectContainer">
-        <div class="selectUser">
-          <div class="selectUserChild" v-on:click="deleteUser(index)" v-for="(item, index) in selectUsers">
-            {{ item }}<i class="fa fa-times" aria-hidden="true"></i>
+        <div class="selectchild">
+          <div class="selectUser">
+            <div class="selectUserChild" v-on:click="deleteUser(index)" v-for="(item, index) in selectUsers">
+              {{ item.user_name }}<i class="fa fa-times" aria-hidden="true"></i>
+            </div>
+            <div class="selectUserChild"  v-on:click="deleteGroup(index)" v-for="(item, index) in selectGroup">
+              {{ item.group_name }}<i class="fa fa-times" aria-hidden="true"></i>
+            </div>
           </div>
         </div>
-        <div style="position: relative;margin-top: 20px;">
-          <input class="search" placeholder="搜索人名"/>
-          <i class="fa fa-search" aria-hidden="true"></i>
-          <ul class="searchResult" v-if="isShow">
-            <li v-for="(item, index) in searchResult" v-on:click="add(index)">
-              {{ item }}
-              <!--<i class="fa fa-check" aria-hidden="true"></i>-->
+        <div class="selectchild">
+          <div style="position: relative;margin-top: 20px;">
+            <input class="search" placeholder="搜索人名" id="search"/>
+            <i class="fa fa-search" aria-hidden="true" v-on:click="search()"></i>
+            <ul class="searchResult" v-if="isShow">
+              <li v-for="(item, index) in searchResult" v-on:click="add(index)">
+                {{ item.user_name }}
+                <!--<i class="fa fa-check" aria-hidden="true"></i>-->
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="group">
+          <div class="meunlist">
+            <router-link to="/group" class="tab">群组管理</router-link>
+          </div>
+          <p class="grouptitle">我的群组</p>
+          <ul>
+            <li v-for="(item, index) in group" v-on:click="addGroups(index)">
+              <p class="groupname">{{item.group_name}}<i class="fa fa-check" aria-hidden="true" style="display: none"></i></p>
             </li>
           </ul>
         </div>
-        
         <button class="form_submit form_submit2" v-on:click="sure">完成</button>
       </div>
     </div>
@@ -175,14 +192,19 @@
 
 <script>
   import myDatepicker from 'vue-datepicker'
+  import qs from 'qs'
   import '../../static/css/create.css'
   export default {
     name: 'create',
     data () {
       return {
-        selectUsers:["蒋平易","姚志伟","刘丹"],
-        searchResult:["林伟华","汪敏"],
-        sureUsers:[],
+        searchResult:[],   //搜索人
+        group:[],  //我的群组
+        selectUsers:[],//  被选人
+        selectGroup:[],  //被选群组
+        sureUsers:[], //  完成后的被选人
+        suregroup:[], //  完成后的被选组
+        userinfo:null,
         isActive:false,
         isShow: true,
         startTime: {
@@ -229,7 +251,56 @@
           }]
       }
     },
+    created:function(){
+      var self = this;
+      self.axios.post('https://phichattest.phicomm.com/index.php/API/user/groups',qs.stringify({
+        user_id:"FX008032"
+      }),{
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      })
+      .then(function (response) {
+        self.group = response.data.data.groups;
+        console.log(self.group)
+      })
+      .catch(function (error) {
+        alert(2);
+      });
+
+      self.axios.post('https://phichattest.phicomm.com/index.php/API/user/info',qs.stringify({
+        user_id:window.localStorage.userId
+      }),{
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      })
+      .then(function (response) {
+        self.userinfo = response.data.data;
+        console.log(self.userinfo)
+      })
+      .catch(function (error) {
+        alert(2);
+      });
+    },
     methods:{
+      search:function(){
+        var keyword = document.getElementById("search").value;
+        var self = this;
+        self.axios.post('https://phichattest.phicomm.com/index.php/API/user/search',qs.stringify({
+          search:keyword
+        }),{
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          }
+        })
+        .then(function (response) {
+          self.searchResult = response.data.data.users;
+          console.log(self.group)
+        })
+        .catch(function (error) {
+        });
+      },
       telephone:function(){
         this.isActive = true;
       },
@@ -239,9 +310,21 @@
       sure:function () {
         this.isActive = false;
         this.sureUsers = this.selectUsers;
+        this.suregroup = this.selectGroup;
+        console.log(this.selectUsers)
       },
       deleteUser:function(index){
         this.selectUsers.splice(index,1);
+      },
+      deleteGroup:function(index){
+        var deleteGroupName = this.selectGroup[index]
+        this.selectGroup.splice(index,1);
+        for(var i in this.group){
+          if(this.group[i] == deleteGroupName){
+            document.getElementsByClassName("fa-check")[i].style.display = "none";
+            break;
+          }
+        }
       },
       add:function(index){
         var selected = this.searchResult[index];
@@ -252,6 +335,22 @@
         }
         this.selectUsers.push(selected);
         this.isShow = false
+      },
+      addGroups:function (index) {
+        var that = this;
+        var styleText = document.getElementsByClassName("fa-check")[index].style.display;
+        var len = document.getElementsByClassName("fa-check").length;
+        if(styleText == "none"){
+          document.getElementsByClassName("fa-check")[index].style.display = "block";
+        }else{
+          document.getElementsByClassName("fa-check")[index].style.display = "none";
+        }
+        that.selectGroup = [];
+        for(var i=0;i<len;i++){
+          if(document.getElementsByClassName("fa-check")[i].style.display == "block"){
+            that.selectGroup.push(that.group[i]);
+          }
+        }
       }
     },
     components: {
