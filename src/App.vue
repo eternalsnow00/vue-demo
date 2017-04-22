@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <transition name="fade">
+    <transition>
       <router-view></router-view>
     </transition>
   </div>
@@ -11,7 +11,7 @@
     name: 'app',
     beforeCreate:function(){
       var self = this;
-      self.axios.get('https://phichattest.phicomm.com/index.php/API/base/info',{
+      self.axios.get(global.URL+'/base/info',{
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         }

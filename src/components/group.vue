@@ -88,7 +88,7 @@
     },
     created:function(){
       var self = this;
-      self.axios.post('https://phichattest.phicomm.com/index.php/API/user/groups',qs.stringify({
+      self.axios.post(global.URL+'/user/groups',qs.stringify({
         user_id:window.localStorage.userId
       }),{
         headers: {
@@ -145,7 +145,7 @@
       search:function(){   //搜索人员
         var keyword = document.getElementById("search").value;
         var self = this;
-        self.axios.post('https://phichattest.phicomm.com/index.php/API/user/search',qs.stringify({
+        self.axios.post(global.URL+'/user/search',qs.stringify({
           search:keyword
         }),{
           headers: {

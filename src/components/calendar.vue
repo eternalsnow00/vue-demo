@@ -25,7 +25,7 @@
     created:function(){
       var self = this;
       var today = moment().format('YYYY/MM/DD');
-      self.axios.post('https://phichattest.phicomm.com/index.php/API/user/meetings',qs.stringify({
+      self.axios.post(global.URL+'/user/meetings',qs.stringify({
         user_id:window.localStorage.userId
       }),{
         headers: {

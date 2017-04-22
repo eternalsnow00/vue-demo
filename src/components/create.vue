@@ -253,7 +253,7 @@
     },
     created:function(){
       var self = this;
-      self.axios.post('https://phichattest.phicomm.com/index.php/API/user/groups',qs.stringify({
+      self.axios.post(global.URL+'/user/groups',qs.stringify({
         user_id:window.localStorage.userId
       }),{
         headers: {
@@ -268,7 +268,7 @@
         alert(2);
       });
 
-      self.axios.post('https://phichattest.phicomm.com/index.php/API/user/info',qs.stringify({
+      self.axios.post(global.URL+'/user/info',qs.stringify({
         user_id:window.localStorage.userId
       }),{
         headers: {
@@ -287,7 +287,7 @@
       search:function(){   //搜索人员
         var keyword = document.getElementById("search").value;
         var self = this;
-        self.axios.post('https://phichattest.phicomm.com/index.php/API/user/search',qs.stringify({
+        self.axios.post(global.URL+'/user/search',qs.stringify({
           search:keyword
         }),{
           headers: {
@@ -370,7 +370,7 @@
           usergroups.push(self.sureGroup[i].group_id)
         }
         obj.users = {user_ids:userids,groups:usergroups};
-        self.axios.post('https://phichattest.phicomm.com/index.php/API/meeting/add',qs.stringify(obj),{
+        self.axios.post(global.URL+'/meeting/add',qs.stringify(obj),{
           headers: {
             "Content-Type": "application/x-www-form-urlencoded"
           }

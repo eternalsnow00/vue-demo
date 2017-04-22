@@ -45,7 +45,8 @@
   left: 0px;
 }
 .title_n i{
-  width: 25px;
+  width: 20px;
+  color: #ff8000;
 }
 .form_input{
   box-sizing: border-box;
