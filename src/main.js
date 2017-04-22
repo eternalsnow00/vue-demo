@@ -8,7 +8,9 @@ import router from './router'
 import VueCarousel from 'vue-carousel'
 import 'vue-event-calendar/dist/style.css' //^1.1.10, CSS has been extracted as one file, so you can easily update it.
 import vueEventCalendar from 'vue-event-calendar'
-
+import MessageBox from 'wc-messagebox'
+import 'wc-messagebox/dist/messagebox.css'
+Vue.use(MessageBox)
 Vue.use(vueEventCalendar, {locale: 'zh', color: '#ff8000'})
 Vue.use(VueAxios, axios)
 Vue.use(VueCarousel);

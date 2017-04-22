@@ -75,7 +75,7 @@
               <option value="23:30">23:30</option>
           </select>
         </div>
-        <div style="float: left;height: 35px;line-height: 35px;padding: 0px 10px">至</div>
+        <div style="float: left;height: 35px;line-height: 35px;padding: 0px 5px">至</div>
         <div class="meetingTime">
           <select v-model="formdata.end">
             <option value="00:00">00:00</option>
@@ -166,17 +166,14 @@
             <i class="fa fa-search" aria-hidden="true" v-on:click="search()"></i>
             <ul class="searchResult" v-if="isShow">
               <li v-for="(item, index) in searchResult" v-on:click="add(index)">
-                {{ item.user_name }}
+                {{ item.user_name }}-{{ item.o_userid }}
                 <!--<i class="fa fa-check" aria-hidden="true"></i>-->
               </li>
             </ul>
           </div>
         </div>
         <div class="group">
-          <div class="meunlist">
-            <router-link to="/group" class="tab">群组管理</router-link>
-          </div>
-          <p class="grouptitle">我的群组</p>
+          <p class="grouptitle">我的群组<router-link to="/group" class="management">群组管理</router-link></p>
           <ul>
             <li v-for="(item, index) in group" v-on:click="addGroups(index)">
               <p class="groupname">{{item.group_name}}<i class="fa fa-check" aria-hidden="true" style="display: none"></i></p>
@@ -192,7 +189,6 @@
 <script>
   import myDatepicker from 'vue-datepicker'
   import qs from 'qs'
-  import '../../static/css/create.css'
   export default {
     name: 'create',
     data () {
@@ -258,7 +254,7 @@
     created:function(){
       var self = this;
       self.axios.post('https://phichattest.phicomm.com/index.php/API/user/groups',qs.stringify({
-        user_id:"FX008032"
+        user_id:window.localStorage.userId
       }),{
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
@@ -271,8 +267,6 @@
       .catch(function (error) {
         alert(2);
       });
-
-      console.log(self.selectUsers.length)
 
       self.axios.post('https://phichattest.phicomm.com/index.php/API/user/info',qs.stringify({
         user_id:window.localStorage.userId
@@ -302,6 +296,7 @@
         })
         .then(function (response) {
           self.searchResult = response.data.data.users;
+          console.log(response.data.data.users)
           self.isShow = true;
         })
         .catch(function (error) {
@@ -375,7 +370,17 @@
           usergroups.push(self.sureGroup[i].group_id)
         }
         obj.users = {user_ids:userids,groups:usergroups};
-        console.log(obj)
+        self.axios.post('https://phichattest.phicomm.com/index.php/API/meeting/add',qs.stringify(obj),{
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          }
+        })
+        .then(function (response) {
+          console.log(response.data);
+        })
+        .catch(function (error) {
+          alert(2);
+        });
       }
     },
     components: {
@@ -385,6 +390,6 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style scoped src="../../static/css/create.css">
 
 </style>

@@ -55,7 +55,6 @@
   border-radius: 5px;
   box-shadow: none;
   border: 1px solid #dcdcdc;
-
   -webkit-appearance: none;
 }
 .form_textarea{
@@ -69,7 +68,7 @@
   -webkit-appearance: none;
 }
 .meetingTime{
-  width: 100px;
+  width: 80px;
   float: left;
 }
 .meetingTime select{
@@ -81,7 +80,7 @@
   background: white;
   border: 1px solid #dcdcdc;
   float: left;
-  width: 90px;
+  width: 100%;
 }
 .users{
   min-height: 34px;
@@ -115,7 +114,11 @@
   color: #8a8a8a;
 }
 .selectContainer{
-  padding: 50px 15px 0px 15px;
+  padding: 50px 0px 0px 0px;
+  box-sizing: border-box;
+}
+.selectchild{
+  padding: 0px 15px;
   box-sizing: border-box;
 }
 .selectUser{
@@ -152,6 +155,11 @@
 }
 .searchResult{
   text-align: left;
+  position: absolute;
+  width: 100%;
+  background: white;
+  font-size: 14px;
+  z-index: 2;
 }
 .searchResult li{
   padding: 10px;
@@ -162,6 +170,10 @@
 .fa-check{
   float: right;
   color: green;
+  display: none;
+  position: absolute;
+  right: 20px;
+  top: 12px;
 }
 .classA{
   left:0%
@@ -169,8 +181,31 @@
 .classB{
   left:100%
 }
+.group{
+  text-align: left;
+  margin-top: 20px;
+}
+.grouptitle{
+  padding: 10px 15px;
+  background: #f1f1f1;
+  color:#333;
+  font-size: 14px;
+}
+.groupname{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-right: 30px;
+  position: relative;
+  padding: 10px 45px 10px 15px;
+  border-bottom: 1px solid #efefef;
+}
 .userinfo{
   padding-left: 28px;
+}
+.management{
+  color: red;
+  float: right;
 }
 /*.form_content i{*/
   /*width: 30px;*/

@@ -13,7 +13,7 @@
         <router-link to="/calendar" class="tab"><img src="../assets/icon2.png" width="40px"/>日历</router-link>
       </div>
       <div class="meunlist2">
-        <router-link to="/create" class="tab"><img src="../assets/icon3.png" width="40px"/>通讯录</router-link>
+        <router-link to="/group" class="tab"><img src="../assets/icon3.png" width="40px"/>通讯录</router-link>
       </div>
       <div class="meunlist">
         <router-link to="/create" class="tab"><img src="../assets/icon4.png" width="40px"/>用户手册</router-link>

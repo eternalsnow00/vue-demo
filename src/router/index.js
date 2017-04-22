@@ -27,13 +27,13 @@ const router =  new Router({
       path:"/create",
       name:"create",
       component:create,
-      meta:{title:'新建'}
+      meta:{title:'新建会议'}
     },
     {
       path:"/group",
       name:"group",
       component:group,
-      meta:{title:'新建'}
+      meta:{title:'群组管理'}
     },
     {
       path:"/error",
@@ -45,7 +45,7 @@ const router =  new Router({
 });
 router.beforeEach((to,from,next) => {
   var ua = navigator.userAgent.toLowerCase();
-  if(ua.match(/MicroMessenger/i)!="micromessenger") {
+  if(ua.match(/MicroMessenger/i)=="micromessenger") {
     next();
   } else {
     if(to.name == 'error'){
