@@ -176,7 +176,9 @@
           ids.push(self.selectUsers[i].user_id);
         }
         if(self.meetingName.length == 0){
-          alert("群组名称不能为空");
+          self.$alert("群组名称不能为空",{
+            title:""
+          });
           return;
         }
         self.axios.post(global.URL+'/user/groupadd',qs.stringify({

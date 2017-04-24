@@ -27,22 +27,11 @@ export default {
   name: 'meun',
   data () {
     return {
-
     }
   },
   created:function(){
-//    var self = this;
-//    self.axios.get('https://phichattest.phicomm.com/index.php/API/base/info',{
-//      headers: {
-//        "Content-Type": "application/x-www-form-urlencoded"
-//      }
-//    })
-//    .then(function (response) {
-//      console.log(response.data);
-//    })
-//    .catch(function (error) {
-//      alert(2);
-//    });
+      console.log(this.$route.params.user_id)
+      window.localStorage.userId = this.$route.params.user_id;
   }
 }
 </script>

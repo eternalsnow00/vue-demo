@@ -10,23 +10,7 @@
   export default {
     name: 'app',
     beforeCreate:function(){
-      var self = this;
-      self.axios.get(global.URL+'/base/info',{
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      })
-      .then(function (response) {
-        console.log(response.data);
-        if(response.data.status== true){
-          window.localStorage.userId = response.data.user_id;
-        }else{
-          self.$router.push({ name: 'error'});
-        }
-      })
-      .catch(function (error) {
-        self.$router.push({ name: 'error'});
-      });
+
     }
   }
 </script>

@@ -317,7 +317,7 @@
         this.selectUsers.splice(index,1);
       },
       deleteGroup:function(index){  //删除组
-        var deleteGroupName = this.selectGroup[index]
+        var deleteGroupName = this.selectGroup[index];
         this.selectGroup.splice(index,1);
         for(var i in this.group){
           if(this.group[i] == deleteGroupName){
@@ -371,6 +371,25 @@
         for(var i in self.sureGroup){
           usergroups.push(self.sureGroup[i].group_id)
         }
+        if(!obj.meeting_name){
+          self.$alert("会议主题不能为空",{
+            title:""
+          });
+          return;
+        }
+        if(!self.startTime.time){
+          self.$alert("会议时间不能为空",{
+            title:""
+          });
+          return;
+        }
+        if(userids.length ==0 && usergroups.length == 0){
+          self.$alert("邀请人不能为空",{
+            title:""
+          });
+          return;
+        }
+
         obj.users = {user_ids:userids,groups:usergroups};
         self.layer = true;
         self.axios.post(global.URL+'/meeting/add',qs.stringify(obj),{
@@ -383,11 +402,12 @@
           if(response.data.status){
             self.layer = false;
             alert("创建成功")
-            self.$router.push({ name: 'meun'});
+            self.$router.push({ name: 'meun', params: { user_id: window.localStorage.userId }})
           }
         })
         .catch(function (error) {
           alert("数据获取失败，请退出重试");
+          self.$router.push({ name: 'meun', params: { user_id: window.localStorage.userId }})
         });
       }
     },

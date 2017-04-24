@@ -13,6 +13,10 @@ const router =  new Router({
   routes: [
     {
       path: '/',
+      redirect: { name: 'meun' }
+    },
+    {
+      path: '/meun/:user_id',
       name: 'meun',
       component: meun,
       meta:{title:'菜单'}
@@ -53,9 +57,7 @@ router.beforeEach((to,from,next) => {
     }else{
       next({ path: '/error' })
     }
-
   }
-
 });
 router.afterEach(route => {
   document.title = route.meta.title
