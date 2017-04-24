@@ -23,7 +23,6 @@
         }else{
           self.$router.push({ name: 'error'});
         }
-
       })
       .catch(function (error) {
         self.$router.push({ name: 'error'});

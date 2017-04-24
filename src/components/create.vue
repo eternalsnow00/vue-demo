@@ -162,11 +162,11 @@
         </div>
         <div class="selectchild">
           <div style="position: relative;margin-top: 20px;">
-            <input class="search" placeholder="搜索人名" id="search"/>
+            <input class="search" placeholder="搜索人名" id="search" v-on:input="change"/>
             <i class="fa fa-search" aria-hidden="true" v-on:click="search()"></i>
             <ul class="searchResult" v-if="isShow">
               <li v-for="(item, index) in searchResult" v-on:click="add(index)">
-                {{ item.user_name }}-{{ item.o_userid }}
+                {{ item.user_name }}-{{ item.user_id }}
                 <!--<i class="fa fa-check" aria-hidden="true"></i>-->
               </li>
             </ul>
@@ -204,13 +204,13 @@
           department:'',
           cost_dep:''
         },
-        formdata:{},
+        formdata:{
+          start:"00:00",
+          end:"00:00"
+        },
         isActive:false,
         isShow: true,
         startTime: {
-          time: ''
-        },
-        endtime: {
           time: ''
         },
         option: {
@@ -237,11 +237,11 @@
             ok: '确认',
             cancel: '取消'
           },
-          overlayOpacity: 0.5, // 0.5 as default
-          dismissible: true // as true as default
+          overlayOpacity: 0.5,
+          dismissible: true
         },
         limit: [{
-          type: 'weekday',
+          type: '',
           available: [1, 2, 3, 4, 5,6,7]
         },
           {
@@ -265,7 +265,7 @@
         console.log(self.group)
       })
       .catch(function (error) {
-        alert(2);
+        alert("数据获取失败，请退出重试");
       });
 
       self.axios.post(global.URL+'/user/info',qs.stringify({
@@ -280,10 +280,28 @@
         console.log(self.userinfo)
       })
       .catch(function (error) {
-        alert(2);
+        alert("数据获取失败，请退出重试");
       });
     },
     methods:{
+      change:function () {
+//        var keyword = document.getElementById("search").value;
+//        var self = this;
+//        self.axios.post(global.URL+'/user/search',qs.stringify({
+//          search:keyword
+//        }),{
+//          headers: {
+//            "Content-Type": "application/x-www-form-urlencoded"
+//          }
+//        })
+//          .then(function (response) {
+//            self.searchResult = response.data.data.users;
+//            console.log(response.data.data.users)
+//            self.isShow = true;
+//          })
+//          .catch(function (error) {
+//          });
+      },
       search:function(){   //搜索人员
         var keyword = document.getElementById("search").value;
         var self = this;
@@ -300,6 +318,7 @@
           self.isShow = true;
         })
         .catch(function (error) {
+          alert("数据获取失败，请退出重试");
         });
       },
       inviter:function(){  //点击邀请人
@@ -329,7 +348,9 @@
       add:function(index){  //搜索带出人添加到选框
         var selected = this.searchResult[index];
         for(var i in this.selectUsers){
-          if(selected == this.selectUsers[i]){
+          if(selected.user_id == this.selectUsers[i].user_id){
+            this.isShow = false;
+            document.getElementById("search").value='';
             return;
           }
         }
@@ -364,12 +385,13 @@
         var userids = [];
         var usergroups = [];
         for(var i in self.sureUsers){
-          userids.push(self.sureUsers[i].o_userid)
+          userids.push(self.sureUsers[i].user_id)
         }
         for(var i in self.sureGroup){
           usergroups.push(self.sureGroup[i].group_id)
         }
         obj.users = {user_ids:userids,groups:usergroups};
+        console.log(obj);
         self.axios.post(global.URL+'/meeting/add',qs.stringify(obj),{
           headers: {
             "Content-Type": "application/x-www-form-urlencoded"
@@ -379,7 +401,7 @@
           console.log(response.data);
         })
         .catch(function (error) {
-          alert(2);
+          alert("数据获取失败，请退出重试");
         });
       }
     },

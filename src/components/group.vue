@@ -24,48 +24,18 @@
           <i class="fa fa-search" aria-hidden="true" v-on:click="search()"></i>
           <ul class="searchResult" v-if="isShow">
             <li v-for="(item, index) in searchResult" v-on:click="add(index)">
-              {{ item.user_name }}-{{ item.o_userid }}
+              {{ item.user_name }}-{{ item.user_id }}
               <!--<i class="fa fa-check" aria-hidden="true"></i>-->
             </li>
           </ul>
         </div>
         <div class="selectUser">
           <div v-if="selectUsers.length==0">请添加组员</div>
-          <div class="selectUserChild" v-on:click="deleteUser(index)" v-for="(item, index) in selectUsers">
+          <div class="selectUserChild" v-if="selectUsers.length>0" v-on:click="deleteUser(index)" v-for="(item, index) in selectUsers">
             {{ item.user_name }}<i class="fa fa-times deleteuser" aria-hidden="true"></i>
           </div>
         </div>
         <button class="form_submit form_submit2" v-on:click="sure">修改</button>
-      </div>
-    </div>
-
-    <!--新建-->
-    <div class="container_right" v-bind:class="[isActive2 ? 'classA' : 'classB']">
-      <div class="top" v-bind:class="[isActive2 ? 'classA' : 'classB']">
-        <p class="goback" v-on:click="goback">
-          <i class="fa fa-angle-left" aria-hidden="true"></i>
-          <span>返回</span>
-        </p>
-      </div>
-      <div class="editgroup">
-        <input tpye="text" class="meetingName" placeholder="群组名称">
-        <div style="position: relative;margin-top: 20px;">
-          <input class="search" placeholder="搜索人名" id="search"/>
-          <i class="fa fa-search" aria-hidden="true" v-on:click="search()"></i>
-          <ul class="searchResult" v-if="isShow">
-            <li v-for="(item, index) in searchResult" v-on:click="add(index)">
-              {{ item.user_name }}-{{ item.o_userid }}
-              <!--<i class="fa fa-check" aria-hidden="true"></i>-->
-            </li>
-          </ul>
-        </div>
-        <div class="selectUser">
-          <div v-if="selectUsers.length==0">请添加组员</div>
-          <div class="selectUserChild" v-on:click="deleteUser(index)" v-for="(item, index) in selectUsers">
-            {{ item.user_name }}<i class="fa fa-times deleteuser" aria-hidden="true"></i>
-          </div>
-        </div>
-        <button class="form_submit form_submit2" v-on:click="sure">新建</button>
       </div>
     </div>
   </div>
@@ -79,8 +49,8 @@
       return {
         group:[],
         isActive:false,
-        isActive2:false,
         meetingName:'',
+        selectgroupid:null,
         selectUsers:[],
         searchResult:[],
         isShow:false
@@ -100,29 +70,19 @@
         console.log(self.group)
       })
       .catch(function (error) {
-        alert(2);
+        alert("数据获取失败，请退出重试");
       });
-//      self.axios.post('https://phichattest.phicomm.com/index.php/API/user/groupadd',
-//        qs.stringify({"groupname":"新建通信组","user_id":"fx008032"}),
-//      {
-//        headers: {
-//          "Content-Type": "application/x-www-form-urlencoded"
-//        }
-//      })
-//      .then(function (response) {
-//        console.log(response.data);
-//      })
-//      .catch(function (error) {
-//        alert(2);
-//      });
     },
     methods:{
       goback:function () {  //返回
         this.isActive = false;
-        this.isActive2 = false;
       },
       newGourp:function(){
-        this.isActive2 = true;
+        var self = this;
+        self.selectgroupid = null;
+        self.isActive = true;
+        self.meetingName = '';
+        self.selectUsers = [];
       },
       deletegroup:function (index) {
         var self =this;
@@ -131,13 +91,44 @@
           yes:"是",
           no:"否"
         }).then(function(success){
-          self.group.splice(index,1);
+          self.axios.post(global.URL+'/user/groupdel',qs.stringify({
+            group_id:self.group[index].group_id
+          }),{
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            }
+          })
+            .then(function (response) {
+              console.log(response.data)
+              if(response.data.status){
+                self.group.splice(index,1);
+              }
+            })
+            .catch(function (error) {
+              alert("数据获取失败，请退出重试");
+            });
         })
       },
       editgroup:function (index) {
         var self = this;
-        self.meetingName = self.group[index].group_name;
-        self.isActive = true;
+        self.axios.post(global.URL+'/user/groupview',qs.stringify({
+          group_id:self.group[index].group_id
+        }),{
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          }
+        })
+          .then(function (response) {
+            console.log(response.data);
+            self.selectgroupid = self.group[index].group_id;
+            self.selectUsers = response.data.data.users;
+            console.log(self.selectUsers)
+            self.meetingName = response.data.data.group_name;
+            self.isActive = true;
+          })
+          .catch(function (error) {
+            alert("数据获取失败，请退出重试");
+          });
       },
       deleteUser:function (index) {
         this.selectUsers.splice(index,1);
@@ -158,18 +149,68 @@
             self.isShow = true;
           })
           .catch(function (error) {
+            alert("数据获取失败，请退出重试");
           });
       },
       add:function(index){  //搜索带出人添加到选框
         var selected = this.searchResult[index];
         for(var i in this.selectUsers){
-          if(selected == this.selectUsers[i]){
+          if(selected.user_id == this.selectUsers[i].user_id){
+            this.isShow = false;
+            document.getElementById("search").value='';
             return;
           }
         }
         this.selectUsers.push(selected);
         this.isShow = false;
         document.getElementById("search").value='';
+      },
+      sure:function () {
+        var self = this;
+        var ids=[];
+        for(var i in self.selectUsers){
+          ids.push(self.selectUsers[i].user_id);
+        }
+        if(self.meetingName.length == 0){
+          alert("群组名称不能为空");
+          return;
+        }
+        self.axios.post(global.URL+'/user/groupadd',qs.stringify({
+          group_id:self.selectgroupid,
+          groupname:self.meetingName,
+          user_id:window.localStorage.userId,
+          user_ids:ids
+        }),{
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          }
+        })
+          .then(function (response) {
+            console.log(response.data)
+            if(self.selectgroupid){
+              if(response.data.status){
+                alert("修改成功");
+                for(var i in self.group){
+                  if(self.selectgroupid == self.group[i].group_id){
+                    self.group[i].group_name = response.data.data.group_name;
+                  }
+                }
+              }else{
+                alert("修改失败");
+              }
+            }else{
+              if(response.data.status){
+                alert("添加成功");
+                self.group.push(response.data.data);
+              }else{
+                alert("添加失败");
+              }
+            }
+            self.isActive = false;
+          })
+          .catch(function (error) {
+            alert("数据获取失败，请退出重试");
+          });
       }
     }
   }

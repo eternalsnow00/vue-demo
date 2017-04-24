@@ -37,6 +37,7 @@
         console.log(self.demoEvents);
       })
       .catch(function (error) {
+        alert("数据获取失败，请退出重试");
       });
       var today = moment().format('YYYY/MM/DD');
       self.$EventCalendar.toDate(today);
