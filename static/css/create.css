@@ -82,6 +82,7 @@
   border: 1px solid #dcdcdc;
   float: left;
   width: 100%;
+  -webkit-appearance: none;
 }
 .users{
   min-height: 34px;
@@ -207,6 +208,22 @@
 .management{
   color: red;
   float: right;
+}
+.layer{
+  position: fixed;
+  top: 0px;
+  bottom:0px;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  z-index: 100;
+}
+.layer p{
+  position: absolute;
+  top: 40%;
+  width: 100%;
+  text-align: center;
+  color: white;
 }
 /*.form_content i{*/
   /*width: 30px;*/

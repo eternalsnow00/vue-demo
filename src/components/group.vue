@@ -20,8 +20,8 @@
       <div class="editgroup">
         <input tpye="text" class="meetingName" placeholder="群组名称" v-model="meetingName">
         <div style="position: relative;margin-top: 20px;">
-          <input class="search" placeholder="搜索人名" id="search"/>
-          <i class="fa fa-search" aria-hidden="true" v-on:click="search()"></i>
+          <input class="search" placeholder="搜索人名" id="search" v-on:input="change"/>
+          <i class="fa fa-search" aria-hidden="true"></i>
           <ul class="searchResult" v-if="isShow">
             <li v-for="(item, index) in searchResult" v-on:click="add(index)">
               {{ item.user_name }}-{{ item.user_id }}
@@ -35,7 +35,8 @@
             {{ item.user_name }}<i class="fa fa-times deleteuser" aria-hidden="true"></i>
           </div>
         </div>
-        <button class="form_submit form_submit2" v-on:click="sure">修改</button>
+        <button class="form_submit form_submit2" v-on:click="sure" v-if="isNew">新增</button>
+        <button class="form_submit form_submit2" v-on:click="sure" v-if="!isNew">修改</button>
       </div>
     </div>
   </div>
@@ -53,7 +54,8 @@
         selectgroupid:null,
         selectUsers:[],
         searchResult:[],
-        isShow:false
+        isShow:false,
+        isNew:true
       }
     },
     created:function(){
@@ -74,11 +76,31 @@
       });
     },
     methods:{
+      change:function () {
+        var keyword = document.getElementById("search").value;
+        var self = this;
+        self.axios.post(global.URL+'/user/search',qs.stringify({
+          search:keyword
+        }),{
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          }
+        })
+          .then(function (response) {
+            self.searchResult = response.data.data.users;
+            console.log(response.data.data.users)
+            self.isShow = true;
+          })
+          .catch(function (error) {
+            alert("数据获取失败，请退出重试");
+          });
+      },
       goback:function () {  //返回
         this.isActive = false;
       },
       newGourp:function(){
         var self = this;
+        self.isNew = true;
         self.selectgroupid = null;
         self.isActive = true;
         self.meetingName = '';
@@ -111,6 +133,7 @@
       },
       editgroup:function (index) {
         var self = this;
+        self.isNew = false;
         self.axios.post(global.URL+'/user/groupview',qs.stringify({
           group_id:self.group[index].group_id
         }),{
@@ -132,25 +155,6 @@
       },
       deleteUser:function (index) {
         this.selectUsers.splice(index,1);
-      },
-      search:function(){   //搜索人员
-        var keyword = document.getElementById("search").value;
-        var self = this;
-        self.axios.post(global.URL+'/user/search',qs.stringify({
-          search:keyword
-        }),{
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-          }
-        })
-          .then(function (response) {
-            self.searchResult = response.data.data.users;
-            console.log(response.data.data.users)
-            self.isShow = true;
-          })
-          .catch(function (error) {
-            alert("数据获取失败，请退出重试");
-          });
       },
       add:function(index){  //搜索带出人添加到选框
         var selected = this.searchResult[index];

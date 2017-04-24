@@ -25,7 +25,6 @@
         <p class="title_n"><i class="fa fa-calendar-times-o" aria-hidden="true"></i>会议时间</p>
         <div class="meetingTime">
             <select v-model="formdata.start">
-              <option value="00:00">00:00</option>
               <option value="00:30">00:30</option>
               <option value="01:00">01:00</option>
               <option value="01:30">01:30</option>
@@ -78,8 +77,6 @@
         <div style="float: left;height: 35px;line-height: 35px;padding: 0px 5px">至</div>
         <div class="meetingTime">
           <select v-model="formdata.end">
-            <option value="00:00">00:00</option>
-            <option value="00:30">00:30</option>
             <option value="01:00">01:00</option>
             <option value="01:30">01:30</option>
             <option value="02:00">02:00</option>
@@ -163,7 +160,7 @@
         <div class="selectchild">
           <div style="position: relative;margin-top: 20px;">
             <input class="search" placeholder="搜索人名" id="search" v-on:input="change"/>
-            <i class="fa fa-search" aria-hidden="true" v-on:click="search()"></i>
+            <i class="fa fa-search" aria-hidden="true" ></i>
             <ul class="searchResult" v-if="isShow">
               <li v-for="(item, index) in searchResult" v-on:click="add(index)">
                 {{ item.user_name }}-{{ item.user_id }}
@@ -183,6 +180,7 @@
         <button class="form_submit form_submit2" v-on:click="sure">完成</button>
       </div>
     </div>
+    <div v-show="layer" class="layer"><p>正在创建，请稍后...</p></div>
   </div>
 </template>
 
@@ -193,6 +191,7 @@
     name: 'create',
     data () {
       return {
+        layer:false,  //遮罩层
         searchResult:[],   //搜索人
         group:[],  //我的群组
         selectUsers:[],//  被选人
@@ -205,8 +204,8 @@
           cost_dep:''
         },
         formdata:{
-          start:"00:00",
-          end:"00:00"
+          start:"00:30",
+          end:"01:00"
         },
         isActive:false,
         isShow: true,
@@ -285,24 +284,6 @@
     },
     methods:{
       change:function () {
-//        var keyword = document.getElementById("search").value;
-//        var self = this;
-//        self.axios.post(global.URL+'/user/search',qs.stringify({
-//          search:keyword
-//        }),{
-//          headers: {
-//            "Content-Type": "application/x-www-form-urlencoded"
-//          }
-//        })
-//          .then(function (response) {
-//            self.searchResult = response.data.data.users;
-//            console.log(response.data.data.users)
-//            self.isShow = true;
-//          })
-//          .catch(function (error) {
-//          });
-      },
-      search:function(){   //搜索人员
         var keyword = document.getElementById("search").value;
         var self = this;
         self.axios.post(global.URL+'/user/search',qs.stringify({
@@ -312,14 +293,14 @@
             "Content-Type": "application/x-www-form-urlencoded"
           }
         })
-        .then(function (response) {
-          self.searchResult = response.data.data.users;
-          console.log(response.data.data.users)
-          self.isShow = true;
-        })
-        .catch(function (error) {
-          alert("数据获取失败，请退出重试");
-        });
+          .then(function (response) {
+            self.searchResult = response.data.data.users;
+            console.log(response.data.data.users)
+            self.isShow = true;
+          })
+          .catch(function (error) {
+            alert("数据获取失败，请退出重试");
+          });
       },
       inviter:function(){  //点击邀请人
         this.isActive = true;
@@ -391,7 +372,7 @@
           usergroups.push(self.sureGroup[i].group_id)
         }
         obj.users = {user_ids:userids,groups:usergroups};
-        console.log(obj);
+        self.layer = true;
         self.axios.post(global.URL+'/meeting/add',qs.stringify(obj),{
           headers: {
             "Content-Type": "application/x-www-form-urlencoded"
@@ -399,6 +380,11 @@
         })
         .then(function (response) {
           console.log(response.data);
+          if(response.data.status){
+            self.layer = false;
+            alert("创建成功")
+            self.$router.push({ name: 'meun'});
+          }
         })
         .catch(function (error) {
           alert("数据获取失败，请退出重试");
