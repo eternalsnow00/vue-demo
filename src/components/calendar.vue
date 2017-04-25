@@ -22,7 +22,7 @@
         ]
       }
     },
-    created:function(){
+    mounted:function(){
       var self = this;
       var today = moment().format('YYYY/MM/DD');
       self.axios.post(global.URL+'/user/meetings',qs.stringify({
@@ -40,13 +40,17 @@
         for(var i in self.demoEvents){
           self.demoEvents[i].end_time = self.demoEvents[i].end_time.substring(self.demoEvents[i].end_time.indexOf(" "));
         }
+        self.$nextTick(function () {
+          var today = moment().format('YYYY/MM/DD');
+          self.$EventCalendar.toDate(today);
+        })
         console.log(self.demoEvents);
       })
       .catch(function (error) {
         alert("数据获取失败，请退出重试");
       });
-      var today = moment().format('YYYY/MM/DD');
-      self.$EventCalendar.toDate(today);
+
+
 
     },
     methods:{
