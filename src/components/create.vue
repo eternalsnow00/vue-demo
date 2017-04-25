@@ -205,7 +205,8 @@
         },
         formdata:{
           start:"00:30",
-          end:"01:00"
+          end:"01:00",
+          note:''
         },
         isActive:false,
         isShow: true,
@@ -363,6 +364,7 @@
         obj.meeting_end = self.startTime.time+" "+self.formdata.end;
         obj.user_id = window.localStorage.userId;
         obj.cost_dep = self.userinfo.cost_dep;
+        obj.remark = self.formdata.note;
         var userids = [];
         var usergroups = [];
         for(var i in self.sureUsers){
@@ -401,9 +403,15 @@
           console.log(response.data);
           if(response.data.status){
             self.layer = false;
-            alert("创建成功")
-            self.$router.push({ name: 'meun', params: { user_id: window.localStorage.userId }})
+            self.$alert("创建成功",{
+              title:""
+            });
+          }else{
+            self.$alert("创建失败",{
+              title:""
+            });
           }
+          self.$router.push({ name: 'meun', params: { user_id: window.localStorage.userId }})
         })
         .catch(function (error) {
           alert("数据获取失败，请退出重试");
