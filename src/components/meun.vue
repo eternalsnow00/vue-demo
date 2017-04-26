@@ -30,7 +30,6 @@ export default {
     }
   },
   created:function(){
-      console.log(this.$route.params.user_id)
       window.localStorage.userId = this.$route.params.user_id;
   }
 }

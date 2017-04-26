@@ -69,7 +69,6 @@
       })
       .then(function (response) {
         self.group = response.data.data.groups;
-        console.log(self.group)
       })
       .catch(function (error) {
         alert("数据获取失败，请退出重试");
@@ -88,7 +87,6 @@
         })
           .then(function (response) {
             self.searchResult = response.data.data.users;
-            console.log(response.data.data.users)
             self.isShow = true;
           })
           .catch(function (error) {
@@ -121,9 +119,10 @@
             }
           })
             .then(function (response) {
-              console.log(response.data)
               if(response.data.status){
                 self.group.splice(index,1);
+              }else{
+                alert("删除失败");
               }
             })
             .catch(function (error) {
@@ -142,10 +141,8 @@
           }
         })
           .then(function (response) {
-            console.log(response.data);
             self.selectgroupid = self.group[index].group_id;
             self.selectUsers = response.data.data.users;
-            console.log(self.selectUsers)
             self.meetingName = response.data.data.group_name;
             self.isActive = true;
           })
@@ -192,7 +189,6 @@
           }
         })
           .then(function (response) {
-            console.log(response.data)
             if(self.selectgroupid){
               if(response.data.status){
                 alert("修改成功");

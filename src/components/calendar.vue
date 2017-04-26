@@ -1,6 +1,6 @@
 <template>
   <div>
-    <vue-event-calendar :events="demoEvents">
+    <vue-event-calendar :events="demoEvents" style="margin-bottom: 20px">
       <template scope="props">
         <div v-for="(event, index) in props.showEvents" class="event-item">
           <!-- 这里拿到的是传入的单个event所有数据 -->
@@ -44,14 +44,10 @@
           var today = moment().format('YYYY/MM/DD');
           self.$EventCalendar.toDate(today);
         })
-        console.log(self.demoEvents);
       })
       .catch(function (error) {
         alert("数据获取失败，请退出重试");
       });
-
-
-
     },
     methods:{
 

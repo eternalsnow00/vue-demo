@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-on="http://www.w3.org/1999/xhtml">
   <div class="container">
     <div class="container_left">
       <div class="form_content">
@@ -148,7 +148,6 @@
       <div class="selectContainer">
         <div class="selectchild">
           <div class="selectUser">
-            <div v-if="selectUsers.length==0&&selectGroup==0">请添加要参会的人员</div>
             <div class="selectUserChild" v-on:click="deleteUser(index)" v-for="(item, index) in selectUsers">
               {{ item.user_name }}<i class="fa fa-times" aria-hidden="true"></i>
             </div>
@@ -159,7 +158,7 @@
         </div>
         <div class="selectchild">
           <div style="position: relative;margin-top: 20px;">
-            <input class="search" placeholder="搜索人名" id="search" v-on:input="change"/>
+            <input class="search" placeholder="搜索参会的人员" id="search" v-on:input="change"/>
             <i class="fa fa-search" aria-hidden="true" ></i>
             <ul class="searchResult" v-if="isShow">
               <li v-for="(item, index) in searchResult" v-on:click="add(index)">
@@ -186,6 +185,7 @@
 
 <script>
   import myDatepicker from 'vue-datepicker'
+  import moment from 'moment'
   import qs from 'qs'
   export default {
     name: 'create',
@@ -246,7 +246,7 @@
         },
           {
             type: 'fromto',
-            from: '2016-01-01',
+            from: moment().subtract(1, 'days').format('YYYY/MM/DD'),
             to: '2055-12-31'
           }]
       }
@@ -262,7 +262,6 @@
       })
       .then(function (response) {
         self.group = response.data.data.groups;
-        console.log(self.group)
       })
       .catch(function (error) {
         alert("数据获取失败，请退出重试");
@@ -277,7 +276,6 @@
       })
       .then(function (response) {
         self.userinfo = response.data.data;
-        console.log(self.userinfo)
       })
       .catch(function (error) {
         alert("数据获取失败，请退出重试");
@@ -296,7 +294,6 @@
         })
           .then(function (response) {
             self.searchResult = response.data.data.users;
-            console.log(response.data.data.users)
             self.isShow = true;
           })
           .catch(function (error) {
@@ -400,18 +397,15 @@
           }
         })
         .then(function (response) {
-          console.log(response.data);
+          self.layer = false;
+          console.log(response.data)
           if(response.data.status){
-            self.layer = false;
-            self.$alert("创建成功",{
-              title:""
-            });
+            self.$alert("创建成功").then(function(success){
+              self.$router.push({ name: 'meun', params: { user_id: window.localStorage.userId }})
+            })
           }else{
-            self.$alert("创建失败",{
-              title:""
-            });
+            self.$alert(response.data.data.message);
           }
-          self.$router.push({ name: 'meun', params: { user_id: window.localStorage.userId }})
         })
         .catch(function (error) {
           alert("数据获取失败，请退出重试");
