@@ -18,113 +18,9 @@
         <input type="text" class="form_input" placeholder="会议主题" v-model="formdata.meeting_name"/>
       </div>
       <div class="form_content">
-        <p class="title_n"><i class="fa fa-calendar" aria-hidden="true"></i>会议日期</p>
-        <date-picker :date="startTime" :option="option" :limit="limit" v-model="formdata.date"></date-picker>
-      </div>
-      <div class="form_content">
-        <p class="title_n"><i class="fa fa-calendar-times-o" aria-hidden="true"></i>会议时间</p>
-        <div class="meetingTime">
-            <select v-model="formdata.start">
-              <option value="00:30">00:30</option>
-              <option value="01:00">01:00</option>
-              <option value="01:30">01:30</option>
-              <option value="02:00">02:00</option>
-              <option value="02:30">02:30</option>
-              <option value="03:00">03:00</option>
-              <option value="03:30">03:30</option>
-              <option value="04:00">04:00</option>
-              <option value="04:30">04:30</option>
-              <option value="05:00">05:00</option>
-              <option value="05:30">05:30</option>
-              <option value="06:00">06:00</option>
-              <option value="06:30">06:30</option>
-              <option value="07:00">07:00</option>
-              <option value="07:30">07:30</option>
-              <option value="08:00">08:00</option>
-              <option value="08:30">08:30</option>
-              <option value="09:00">09:00</option>
-              <option value="09:30">09:30</option>
-              <option value="10:00">10:00</option>
-              <option value="10:30">10:30</option>
-              <option value="11:00">11:00</option>
-              <option value="11:30">11:30</option>
-              <option value="12:00">12:00</option>
-              <option value="12:30">12:30</option>
-              <option value="13:00">13:00</option>
-              <option value="13:30">13:30</option>
-              <option value="14:00">14:00</option>
-              <option value="14:30">14:30</option>
-              <option value="15:00">15:00</option>
-              <option value="15:30">15:30</option>
-              <option value="16:00">16:00</option>
-              <option value="16:30">16:30</option>
-              <option value="17:00">17:00</option>
-              <option value="17:30">17:30</option>
-              <option value="18:00">18:00</option>
-              <option value="18:30">18:30</option>
-              <option value="19:00">19:00</option>
-              <option value="19:30">19:30</option>
-              <option value="20:00">20:00</option>
-              <option value="20:30">20:30</option>
-              <option value="21:00">21:00</option>
-              <option value="21:30">21:30</option>
-              <option value="22:00">22:00</option>
-              <option value="22:30">22:30</option>
-              <option value="23:00">23:00</option>
-              <option value="23:30">23:30</option>
-          </select>
-        </div>
-        <div style="float: left;height: 35px;line-height: 35px;padding: 0px 5px">至</div>
-        <div class="meetingTime">
-          <select v-model="formdata.end">
-            <option value="01:00">01:00</option>
-            <option value="01:30">01:30</option>
-            <option value="02:00">02:00</option>
-            <option value="02:30">02:30</option>
-            <option value="03:00">03:00</option>
-            <option value="03:30">03:30</option>
-            <option value="04:00">04:00</option>
-            <option value="04:30">04:30</option>
-            <option value="05:00">05:00</option>
-            <option value="05:30">05:30</option>
-            <option value="06:00">06:00</option>
-            <option value="06:30">06:30</option>
-            <option value="07:00">07:00</option>
-            <option value="07:30">07:30</option>
-            <option value="08:00">08:00</option>
-            <option value="08:30">08:30</option>
-            <option value="09:00">09:00</option>
-            <option value="09:30">09:30</option>
-            <option value="10:00">10:00</option>
-            <option value="10:30">10:30</option>
-            <option value="11:00">11:00</option>
-            <option value="11:30">11:30</option>
-            <option value="12:00">12:00</option>
-            <option value="12:30">12:30</option>
-            <option value="13:00">13:00</option>
-            <option value="13:30">13:30</option>
-            <option value="14:00">14:00</option>
-            <option value="14:30">14:30</option>
-            <option value="15:00">15:00</option>
-            <option value="15:30">15:30</option>
-            <option value="16:00">16:00</option>
-            <option value="16:30">16:30</option>
-            <option value="17:00">17:00</option>
-            <option value="17:30">17:30</option>
-            <option value="18:00">18:00</option>
-            <option value="18:30">18:30</option>
-            <option value="19:00">19:00</option>
-            <option value="19:30">19:30</option>
-            <option value="20:00">20:00</option>
-            <option value="20:30">20:30</option>
-            <option value="21:00">21:00</option>
-            <option value="21:30">21:30</option>
-            <option value="22:00">22:00</option>
-            <option value="22:30">22:30</option>
-            <option value="23:00">23:00</option>
-            <option value="23:30">23:30</option>
-          </select>
-        </div>
+        <p class="title_n"><i class="fa fa-calendar" aria-hidden="true"></i>会议时间</p>
+        <date-picker :date="startTime" :option="option" :limit="limit"></date-picker>
+        <date-picker :date="endTime" :option="option2" :limit="limit" style="margin-top: 10px"></date-picker>
       </div>
       <div class="form_content" v-on:click="inviter">
         <p class="title_n"><i class="fa fa-users" aria-hidden="true"></i>邀请人</p>
@@ -141,8 +37,9 @@
     <div class="container_right" v-bind:class="[isActive ? 'classA' : 'classB']">
       <div class="top" v-bind:class="[isActive ? 'classA' : 'classB']">
         <p class="goback" v-on:click="goback">
-          <i class="fa fa-angle-left" aria-hidden="true"></i>
+          <!--<i class="fa fa-angle-left" aria-hidden="true"></i>-->
           <span>返回</span>
+          <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
         </p>
       </div>
       <div class="selectContainer">
@@ -169,7 +66,7 @@
           </div>
         </div>
         <div class="group">
-          <p class="grouptitle">我的群组<router-link to="/group" class="management">群组管理</router-link></p>
+          <p class="grouptitle"><span v-if="group.length>0">我的群组</span><router-link to="/group" class="management">群组管理</router-link></p>
           <ul>
             <li v-for="(item, index) in group" v-on:click="addGroups(index)">
               <p class="groupname">{{item.group_name}}<i class="fa fa-check" aria-hidden="true" style="display: none"></i></p>
@@ -204,8 +101,6 @@
           cost_dep:''
         },
         formdata:{
-          start:"00:30",
-          end:"01:00",
           note:''
         },
         isActive:false,
@@ -213,12 +108,43 @@
         startTime: {
           time: ''
         },
+        endTime:{
+          time: ''
+        },
         option: {
-          type: 'day',
+          type: 'min',
           week: ['一', '二', '三', '四', '五', '六', '日'],
           month: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-          format: 'YYYY-MM-DD',
-          placeholder: '会议日期',
+          format: 'YYYY-MM-DD HH:mm',
+          placeholder: '会议开始日期',
+          inputStyle: {
+            "box-sizing": "border-box",
+            "-webkit-box-sizing": "border-box",
+            "width": "100%",
+            "padding": "8px 10px",
+            "border-radius": "5px",
+            "box-shadow": "none",
+            "border": "1px solid #dcdcdc",
+            "-webkit-appearance":"none"
+          },
+
+          color: {
+            header: '#ff8000',
+            headerText: '#fff'
+          },
+          buttons: {
+            ok: '确认',
+            cancel: '取消'
+          },
+          overlayOpacity: 0.5,
+          dismissible: true
+        },
+        option2: {
+          type: 'min',
+          week: ['一', '二', '三', '四', '五', '六', '日'],
+          month: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+          format: 'YYYY-MM-DD HH:mm',
+          placeholder: '会议结束日期',
           inputStyle: {
             "box-sizing": "border-box",
             "-webkit-box-sizing": "border-box",
@@ -247,7 +173,7 @@
           {
             type: 'fromto',
             from: moment().subtract(1, 'days').format('YYYY/MM/DD'),
-            to: '2055-12-31'
+            to: '2020-12-31'
           }]
       }
     },
@@ -357,8 +283,8 @@
         var self = this;
         var obj = {}
         obj.meeting_name = self.formdata.meeting_name
-        obj.meeting_start= self.startTime.time+" "+self.formdata.start;
-        obj.meeting_end = self.startTime.time+" "+self.formdata.end;
+        obj.meeting_start= self.startTime.time
+        obj.meeting_end = self.endTime.time
         obj.user_id = window.localStorage.userId;
         obj.cost_dep = self.userinfo.cost_dep;
         obj.remark = self.formdata.note;

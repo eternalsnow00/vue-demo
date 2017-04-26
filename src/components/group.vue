@@ -1,6 +1,9 @@
 <template>
   <div style="position: relative">
     <div class="group container_left">
+      <div v-if="group.length==0" class="nodata">
+        <p class="nogroup">暂无群组,点击<span v-on:click="newGourp" style="color: red">新建群组</span></p>
+      </div>
       <p class="grouptitle">我的群组<span v-on:click="newGourp" class="new">新建群组</span></p>
       <ul>
         <li v-for="(item, index) in group" >
@@ -13,14 +16,14 @@
     <div class="container_right" v-bind:class="[isActive ? 'classA' : 'classB']">
       <div class="top" v-bind:class="[isActive ? 'classA' : 'classB']">
         <p class="goback" v-on:click="goback">
-          <i class="fa fa-angle-left" aria-hidden="true"></i>
           <span>返回</span>
+          <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
         </p>
       </div>
       <div class="editgroup">
         <input tpye="text" class="meetingName" placeholder="群组名称" v-model="meetingName">
         <div style="position: relative;margin-top: 20px;">
-          <input class="search" placeholder="搜索人名" id="search" v-on:input="change"/>
+          <input class="search" placeholder="搜索参会人员" id="search" v-on:input="change"/>
           <i class="fa fa-search" aria-hidden="true"></i>
           <ul class="searchResult" v-if="isShow">
             <li v-for="(item, index) in searchResult" v-on:click="add(index)">
@@ -30,7 +33,6 @@
           </ul>
         </div>
         <div class="selectUser">
-          <div v-if="selectUsers.length==0">请添加组员</div>
           <div class="selectUserChild" v-if="selectUsers.length>0" v-on:click="deleteUser(index)" v-for="(item, index) in selectUsers">
             {{ item.user_name }}<i class="fa fa-times deleteuser" aria-hidden="true"></i>
           </div>
@@ -220,6 +222,19 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .nodata{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: white;
+  }
+  .nogroup{
+    position: absolute;
+    width: 100%;
+    top: 40%;
+    text-align: center;
+    padding: 0px 15px;
+  }
   .container_right{
     height: 100%;
     width: 100%;

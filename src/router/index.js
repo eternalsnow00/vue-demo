@@ -5,7 +5,7 @@ import calendar from '@/components/calendar'
 import create from '@/components/create'
 import group from '@/components/group'
 import error from '@/components/error'
-
+import pdf from '@/components/pdf'
 Vue.use(Router);
 
 const router =  new Router({
@@ -44,12 +44,18 @@ const router =  new Router({
       name:"error",
       component:error,
       meta:{title:'错误'}
+    },
+    {
+      path:"/pdf",
+      name:"pdf",
+      component:pdf,
+      meta:{title:'用户手册'}
     }
   ]
 });
 router.beforeEach((to,from,next) => {
   var ua = navigator.userAgent.toLowerCase();
-  if(ua.match(/MicroMessenger/i)=="micromessenger") {
+  if(ua.match(/MicroMessenger/i)!="micromessenger") {
     next();
   } else {
     if(to.name == 'error'){

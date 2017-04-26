@@ -192,6 +192,7 @@
   background: #f1f1f1;
   color:#333;
   font-size: 14px;
+  overflow: hidden;
 }
 .groupname{
   overflow: hidden;
