@@ -63,7 +63,7 @@
     created:function(){
       var self = this;
       self.axios.post(global.URL+'/user/groups',qs.stringify({
-        user_id:window.localStorage.userId
+        user_id:global.USER_ID
       }),{
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
@@ -183,7 +183,7 @@
         self.axios.post(global.URL+'/user/groupadd',qs.stringify({
           group_id:self.selectgroupid,
           groupname:self.meetingName,
-          user_id:window.localStorage.userId,
+          user_id:global.USER_ID,
           user_ids:ids
         }),{
           headers: {

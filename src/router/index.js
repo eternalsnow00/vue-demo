@@ -55,7 +55,7 @@ const router =  new Router({
 });
 router.beforeEach((to,from,next) => {
   var ua = navigator.userAgent.toLowerCase();
-  if(ua.match(/MicroMessenger/i)!="micromessenger") {
+  if(ua.match(/MicroMessenger/i)=="micromessenger") {
     next();
   } else {
     if(to.name == 'error'){

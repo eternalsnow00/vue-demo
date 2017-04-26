@@ -26,7 +26,7 @@
       var self = this;
       var today = moment().format('YYYY/MM/DD');
       self.axios.post(global.URL+'/user/meetings',qs.stringify({
-        user_id:window.localStorage.userId
+        user_id:global.USER_ID
       }),{
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"

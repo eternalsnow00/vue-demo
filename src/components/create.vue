@@ -14,7 +14,7 @@
         <input type="text" class="form_input" placeholder="成本中心" readonly v-model="userinfo.cost_dep"/>
       </div>
       <div class="form_content">
-        <p class="title_n"><i class="fa fa-money" aria-hidden="true"></i>会议主题</p>
+        <p class="title_n"><i class="fa fa-flickr" aria-hidden="true"></i>会议主题</p>
         <input type="text" class="form_input" placeholder="会议主题" v-model="formdata.meeting_name"/>
       </div>
       <div class="form_content">
@@ -180,7 +180,7 @@
     created:function(){
       var self = this;
       self.axios.post(global.URL+'/user/groups',qs.stringify({
-        user_id:window.localStorage.userId
+        user_id:global.USER_ID
       }),{
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
@@ -194,7 +194,7 @@
       });
 
       self.axios.post(global.URL+'/user/info',qs.stringify({
-        user_id:window.localStorage.userId
+        user_id:global.USER_ID
       }),{
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
@@ -285,7 +285,7 @@
         obj.meeting_name = self.formdata.meeting_name
         obj.meeting_start= self.startTime.time
         obj.meeting_end = self.endTime.time
-        obj.user_id = window.localStorage.userId;
+        obj.user_id = global.USER_ID;
         obj.cost_dep = self.userinfo.cost_dep;
         obj.remark = self.formdata.note;
         var userids = [];
@@ -327,7 +327,7 @@
           console.log(response.data)
           if(response.data.status){
             self.$alert("创建成功").then(function(success){
-              self.$router.push({ name: 'meun', params: { user_id: window.localStorage.userId }})
+              self.$router.push({ name: 'meun', params: { user_id: global.USER_ID }})
             })
           }else{
             self.$alert(response.data.data.message);
@@ -335,7 +335,7 @@
         })
         .catch(function (error) {
           alert("数据获取失败，请退出重试");
-          self.$router.push({ name: 'meun', params: { user_id: window.localStorage.userId }})
+          self.$router.push({ name: 'meun', params: { user_id: global.USER_ID }})
         });
       }
     },

@@ -10,7 +10,7 @@ import 'vue-event-calendar/dist/style.css' //^1.1.10, CSS has been extracted as 
 import vueEventCalendar from 'vue-event-calendar'
 import MessageBox from 'wc-messagebox'
 import 'wc-messagebox/dist/messagebox.css'
-import '../src/url.js'
+import './global.js'
 Vue.use(MessageBox)
 Vue.use(vueEventCalendar, {locale: 'zh', color: '#ff8000'})
 Vue.use(VueAxios, axios)
